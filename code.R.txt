@@ -1,0 +1,668 @@
+################Figure 1###################
+library(readxl)
+library(ggplot2)
+library(cowplot)
+library("ggsci")
+pal1<-pal_aaas("default")(10)
+
+#Figure 1a
+data<-read_xlsx("data.xlsx",sheet = "Fig1a")
+Fig1a<-ggplot(data,aes(Year,y))+
+  geom_point( size=2,color=pal1[8])+ 
+  geom_smooth(method="lm",linetype=2,se=FALSE,color=pal1[8])+ 
+  labs(x = NULL,y=expression("Annual ANPP (g " ~ m^-2 *")"))+
+  theme_bw() +  
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 370)) 
+
+#（2）Figure 1b
+data<-read_xlsx("data.xlsx",sheet = "Fig1b")
+formula2 <- y ~ poly(x, 2, raw = TRUE)
+Fig1b<-ggplot(data,aes(Year,y))+
+  geom_point( size=2,color=pal1[8],pch=17)+ 
+  geom_smooth(method="lm", formula= formula2,se=0.95,alpha = 0.3,color=pal1[8])+
+  labs(x = NULL,y=expression("Annual ANPP (g " ~ m^-2 *")"))+
+  theme_bw() +  
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 370)) 
+
+#(3)Figure 1c
+data<-read_xlsx("data.xlsx",sheet = "Fig1c")
+Fig1c<-ggplot(data,aes(Year,y))+
+  geom_point(size=2,color="#1B1919FF")+
+  geom_smooth(method = "lm",color="#1B1919FF")+
+  theme_bw() +  
+  theme(panel.grid=element_blank())+
+  labs(x = NULL,y="CWM GS (pg)")+
+  theme(axis.title = element_text(size = 16))+ 
+  theme(axis.text.x = element_text(size = 16), axis.text.y = element_text(size = 16))+
+  theme(legend.position = c(0.13,0.9))+
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.text = element_text(size = 10)) + 
+  labs(colour = NULL)+
+  theme(legend.position = "none")+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 9))
+
+#(4)Figure 1d
+data<-read_xlsx("data.xlsx",sheet = "Fig1d")
+Fig1d<-ggplot(data,aes(Year,y))+
+  geom_point(size=2,pch=17,color="#1B1919FF")+
+  geom_smooth(data=data,formula=y~I(x^2)+x,linetype=1,method="lm", se=0.95,alpha = 0.3,color="#1B1919FF")+
+  theme_bw() +  
+  theme(panel.grid=element_blank())+
+  labs(x = NULL,y="CWM GS (pg)")+
+  theme(axis.title = element_text(size = 16))+ 
+  theme(axis.text.x = element_text(size = 16), axis.text.y = element_text(size = 16))+
+  theme(legend.position = c(0.13,0.9))+  
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.text = element_text(size = 10)) + 
+  labs(colour = NULL)+
+  theme(legend.position = "none")+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 9))
+
+#（5）Figure 1e
+data<-read_xlsx("data.xlsx",sheet = "Fig1e")
+data$class<-factor(data$class,levels = c("small","large"))
+Fig1e<-ggplot(data,aes(Year,y,colour=class))+
+  geom_point(size=2)+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  geom_smooth(method="lm",data=subset(data,class=="small"),linetype=2,se=FALSE)+
+  geom_smooth(method="lm",data=subset(data,class=="large"),linetype=1)+ 
+  labs(x = NULL,y=expression("Genome size group ANPP (g " ~ m^-2 *")"))+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 370))+
+  labs(colour = NULL)+
+  theme(legend.position = "none")+  
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.text = element_text(size = 10))
+
+#（6）Figure 1f
+data<-read_xlsx("data.xlsx",sheet = "Fig1f")
+data$class<-factor(data$class,levels = c("small","large"))
+Fig1f<-ggplot(data,aes(Year,y,colour=class))+
+  geom_point(size=2,pch=17)+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  geom_smooth(method="lm",formula = y~I(x^2)+x,data=subset(data,class=="small"),linetype=1)+
+  geom_smooth(method="lm",formula = y~I(x^2)+x,data=subset(data,class=="large"),linetype=1)+ 
+  labs(x = NULL,y=expression("Genome size group ANPP (g " ~ m^-2 *")"))+
+  theme_bw() +  
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 370))+
+  labs(colour = NULL)+
+  theme(legend.position = "none")+  
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.text = element_text(size = 10))
+
+#（7）Figure 1g
+data<-read_xlsx("data.xlsx",sheet = "Fig1g")
+data$class<-factor(data$class,levels = c("small","large"))
+Fig1g<-ggplot(data,aes(Year,y,colour=class))+
+  geom_point(size=2)+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  geom_smooth(linetype=1,method="lm", se=0.95,alpha = 0.3)+
+  labs(x = NULL,y=expression("Relative proportion ( % )"))+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 130))+
+  theme(legend.position = "none")+  
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.text = element_text(size = 10))+
+  labs(colour = NULL)
+
+#（8) Figure 1h
+data<-read_xlsx("data.xlsx",sheet = "Fig1h")
+data$class<-factor(data$class,levels = c("small","large"))
+Fig1h<-ggplot(data,aes(Year,y,colour=class))+
+  geom_point(size=2,pch=17)+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  geom_smooth(data=data,formula=y~I(x^2)+x,linetype=1,method="lm", se=0.95,alpha = 0.3)+
+  labs(x = NULL,y=expression("Percent of genomic group peak ANPP ( % )"))+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  coord_cartesian(xlim=c(1980,2023),ylim = c(0, 130))+
+  theme(legend.position = "none")+ 
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.text = element_text(size = 10))+
+  labs(colour = NULL)
+
+Figure1<-plot_grid(Fig1a,Fig1b,Fig1c,Fig1d,Fig1e,Fig1f,Fig1g,Fig1h,nrow = 4,ncol=2,label_x = 0.88,label_y = 0.99,label_size=16,align="hv")
+
+
+
+
+
+
+
+#############Figure 2###########
+library(readxl)
+library(ggplot2)
+library(grid)
+pal1<-pal_aaas("default")(10)
+
+data<-read_xlsx("data.xlsx",sheet = "Fig2")
+data$year_period<- factor(data$year_period, levels = c("1982-2002","2003-2021"))
+Figure<-ggplot(data,aes(year,GDD))+
+  geom_point(size=2,aes(color = year_period))+
+  scale_color_manual(values=c("#795B34","#FCB462"))+
+  geom_smooth(method = "lm",se=FALSE,color="black")+
+  geom_line()+
+  theme(legend.position = "none")+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+ 
+  theme(legend.position = "none")+ 
+  theme(axis.text.x = element_text(size = 12,face = "bold"), axis.text.y = element_text(size = 12,face = "bold"))+
+  theme(axis.title = element_text(size = 12,face = "bold"))+ 
+  coord_cartesian(xlim=c(1980,2023),ylim = c(450, 1250))+
+  labs(x = NULL,y = "Growing-degree days from January to June")
+Figure
+
+
+vie<-viewport(width=0.45,height=0.35,x=0.74,y=0.284) 
+data<-read_xlsx("data.xlsx",sheet = "Fig2")
+d1<-data
+d1$year_period<- factor(d1$year_period, levels = c("1982-2002","2003-2021"))
+Figure2<-ggplot(d1,aes(year_period,GDD))+
+  geom_violin(aes(color = year_period), trim = FALSE)+
+  scale_color_manual(values=c("#795B34","#FCB462"))+
+  stat_summary(fun= mean, geom = "point",shape = 23, size = 2, color = "green4")+
+  stat_summary(fun.data="mean_sdl", fun.args = list(mult=1),geom="pointrange", color = "orange")+
+  geom_boxplot(width = 0.2)+
+  theme_bw() +  
+  theme(panel.grid=element_blank())+ 
+  theme(legend.position = c(0.13,0.9))+  
+  theme(legend.position = "none")+ 
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.title = element_text(size = 0))+ 
+  labs(x = NULL,y = "GDD")+
+  scale_y_continuous(limits  = c(750, 1310),breaks=c(800,1000,1200))+
+  theme(axis.text.x = element_text(size = 9,face = "bold"), axis.text.y = element_text(size = 9,face = "bold"))+
+  theme(axis.title = element_text(size = 9,face = "bold")) 
+print(Figure2,vp=vie)
+
+
+
+
+
+
+############################Figure 3##############################
+library(readxl)
+library(nlme)
+library(ggplot2)
+library("ggsci")
+library("scales")
+library(patchwork)
+pal1<-pal_aaas("default")(10)
+pal2<-pal_npg("nrc",alpha = 0.7)(10)
+
+#Figure 3a
+d1<-read_xlsx("data.xlsx",sheet = "Fig3a")
+model1<-gls(y ~ GDD, correlation = corAR1(form =~ Year), data=d1)
+Fig3a<-ggplot(d1,aes(GDD,y))+
+  geom_point( size=2,color=pal1[8])+
+  geom_smooth(aes(GDD,fitted(model1)),method="lm",linetype=2,se=FALSE,linewidth=1.1,col="black")+
+  labs(x = NULL,y=expression("Annual ANPP (g " ~ m^-2 *")"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  coord_cartesian(ylim = c(0, 370)) +
+  scale_x_continuous(limits = c(835,1250),breaks = c(920,1050,1180))
+
+#（2）Figure 3b
+d2<-read_xlsx("data.xlsx",sheet = "Fig3b")
+model2<-gls(y ~ GDD, correlation = corAR1(form =~ Year),  data=d2)
+Fig3b<-ggplot(d2,aes(GDD,y))+
+  geom_point( size=2,color=pal1[8],pch=17)+
+  geom_smooth(aes(GDD,fitted(model2)),method="lm",linetype=2,se=FALSE,linewidth=1.1,col="black")+
+  labs(x = NULL,y=NULL)+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+
+  theme(axis.text.x = element_blank(), axis.text.y =element_text(size = 16))+
+  coord_cartesian(ylim = c(0, 370)) +
+  scale_x_continuous(limits = c(835,1250),breaks = c(920,1050,1180))
+
+#（3）Figure 3c
+d3<-read_xlsx("data.xlsx",sheet = "Fig3c")
+model3<-gls(y ~ GDD, correlation = corAR1(form =~ Year),  data=d3)
+Fig3c<-ggplot(d3,aes(GDD,y))+
+  geom_point(size=2,pch=16,color = "#1B1919FF")+
+  geom_smooth(aes(GDD,fitted(model3)),method="lm",linewidth=1.1,col="black",linetype=1,se=FALSE)+
+  theme(legend.position = "none")+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 16), axis.text.y = element_text(size = 16))+
+  theme(axis.title = element_text(size = 16))+
+  scale_x_continuous(limits = c(835,1250),breaks = c(920,1050,1180))+
+  coord_cartesian(ylim = c(0, 9))+
+  labs(x = "Growing degree-days from January to June (°C.day)",y=expression("CWM GS"))+
+  labs(colour = NULL)
+
+#（4）Figure 3d
+d4<-read_xlsx("data.xlsx",sheet = "Fig3d")
+model4a<-gls(y ~ GDD, correlation = corAR1(form =~ Year),  data=d4)
+d4b<-subset(d4,Year>2002)
+d4b$GDDb<-d4b$GDD
+model4b<-gls(y ~ GDDb, correlation = corAR1(form =~ Year),  data=d4b)
+a<-model4b$fitted
+b<-d4b$GDD
+d<-data.frame(a,b)
+Fig3d<-ggplot(d4,aes(GDD,y))+
+  geom_point(size=2,color = "#1B1919FF",pch=17)+
+  geom_smooth(aes(GDD,fitted(model4a)),linewidth=1.1,method="lm",linetype=2,se=FALSE,color="black")+
+  geom_line(aes(b,a),data=d,linetype=1,linewidth=1.1,color="#FCB462")+
+  theme(legend.position = "none")+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 16), axis.text.y = element_text(size = 16))+
+  theme(axis.title = element_text(size = 16))+
+  scale_x_continuous(limits = c(835,1250),breaks = c(920,1050,1180))+
+  labs(x = "Growing degree-days from January to June (°C.day)",y=NULL)+
+  coord_cartesian(ylim = c(0, 9))
+
+###### （5）Figure 3e
+d5<-read_xlsx("data.xlsx",sheet = "Fig3e")
+Fig3e<-ggplot(d5,aes(x,y))+
+  geom_point(aes(color = x), size = 2, pch = 16, stroke = 1.1) + 
+  geom_hline (yintercept = 0,col="gray",linetype=2)+
+  geom_smooth(method="lm",alpha=0.2,linewidth=1.1,col="black")+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  theme(legend.position = c(0.13,0.9))+
+  theme(legend.position = "none")+
+  scale_x_continuous(limits=c(-0.85,1.62), breaks=c(-0.5,0.0,0.5,1.0,1.5))+
+  scale_y_continuous(limits=c(-0.00135,0.0009), breaks=c(-0.0008,0,0.0008))+
+  labs(x = NULL,y="Slopes (GDD vs. species biomass)")+
+  scale_color_gradient(low = "#4DBAD6", high = "#E44A33")
+
+#####（6）Figure 3f
+d6<-read_xlsx("data.xlsx",sheet = "Fig3f")
+Fig3f<-ggplot(d6,aes(x,y))+
+  geom_point(aes(color = x), size = 2, pch = 17, stroke = 1.1) + 
+  geom_hline (yintercept = 0,col="gray",linetype=2)+
+  geom_smooth(method="lm",alpha=0.2,linewidth=1.1,col="black",linetype=2,se=FALSE)+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16))+ 
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 16))+
+  theme(legend.position = c(0.13,0.9))+
+  theme(legend.position = "none")+
+  scale_x_continuous(limits=c(-0.85,1.62), breaks=c(-0.5,0.0,0.5,1.0,1.5))+
+  scale_y_continuous(limits=c(-0.00135,0.0009), breaks=c(-0.001,-0.0005,0.00,0.0005))+
+  labs(x = NULL,y=NULL)+
+  scale_color_gradient(low = "#4DBAD6", high = "#E44A33")
+
+###### （7）Figure 3g
+d7<-read_xlsx("data.xlsx",sheet = "Fig3g")
+Fig3g<- ggplot(d7, aes(x, y)) +
+  geom_point(aes(color = x), size = 2, pch = 16, stroke = 1.1) +
+  geom_hline(yintercept = 0, col = "gray", linetype = 2) +
+  geom_smooth(method = "lm", alpha = 0.2, linewidth = 1.1, col = "black") +
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  theme(axis.title = element_text(size = 16)) +
+  theme(axis.text.x = element_text(size = 16), 
+        axis.text.y = element_text(size = 16)) +
+  theme(legend.position = "none") + 
+  scale_x_continuous(limits = c(-0.85, 1.62), 
+                     breaks = c(-0.5, 0.0, 0.5, 1.0, 1.5)) +
+  scale_y_continuous(limits = c(-0.002, 0.002), 
+                     breaks = c(-0.0015, 0, 0.0015)) +
+  labs(x = "Log(genome size)", 
+       y = "Slopes (GDD vs. relative species biomass)") +
+  scale_color_gradient(low = "#4DBAD6", high = "#E44A33")
+
+#####（8）Fig3h
+data<-read_xlsx("data.xlsx",sheet = "Fig3h")
+d8<-subset(data,class=="1982-2021")
+d8a<-subset(data,class=="2003-2021")
+Fig3h<-ggplot(d8,aes(x,y))+
+  geom_point(aes(color = x), size = 2, pch = 17, stroke = 1.1) + 
+  geom_hline (yintercept = 0,col="gray",linetype=2)+
+  geom_smooth(method="lm",alpha=0.2,linewidth=1.1,col="black",linetype=2,se=FALSE)+
+  geom_point(aes(x, y, color = x), size = 2, pch = 2, stroke = 0.8,data=d8a) + 
+  geom_smooth(aes(x, y, color = x),method="lm",alpha=0.08,linewidth=1.1,fill="#FCB462",col="#FCB462",linetype=1,data=d8a)+
+  theme_bw() +  
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16))+
+  theme(axis.text.x = element_text(size = 16), axis.text.y = element_text(size = 16))+
+  theme(legend.position = c(0.13,0.9))+ 
+  theme(legend.position = "none")+
+  scale_x_continuous(limits=c(-0.85,1.62), breaks=c(-0.5,0.0,0.5,1.0,1.5))+
+  scale_y_continuous(limits=c(-0.00135,0.0009), breaks=c(-0.001,-0.0005,0.00,0.0005))+
+  labs(x = "Log(genome size)",y=NULL)+
+  scale_color_gradient(low = "#4DBAD6", high = "#E44A33")
+
+final_plot <- Fig3a+Fig3b+Fig3c+Fig3d+Fig3e +Fig3f+ Fig3g + Fig3h +
+  plot_layout(nrow = 4, ncol = 2) 
+
+
+
+
+
+
+
+
+
+
+
+
+############################Figure 4#####################################
+library(readxl)
+library(ggplot2)
+library(cowplot)
+library("ggsci")
+pal1<-pal_aaas("default")(10)
+pal2<-pal_npg("nrc",alpha = 0.7)(10)
+
+#(1)Figure 4a
+d1<-read_xlsx("data.xlsx",sheet = "Fig4a")
+d1$class2<-factor(d1$class2,levels = c("small","large"))
+Fig4a<-ggplot(d1,aes(x,y,color=class2))+
+  geom_point(pch=16,size=2,aes(x,y), alpha = 0.7)+
+  theme_bw() +  
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  theme(panel.grid=element_blank())+
+  geom_smooth(aes(x=x,y=y),formula=y~I(x^2)+x,linetype=1,method="lm", se=0.95,alpha = 0.3,data=subset(d1,class2=="large"))+
+  geom_smooth(aes(x=x,y=y),linetype=1,method="lm", se=0.95,alpha = 0.3,data=subset(d1,class2=="small"))+
+  scale_linetype_manual(values=c(1,2))+
+  scale_x_continuous(limits = c(130,730),breaks = c(200,400,600))+
+  scale_y_continuous(limits = c(-10,70),breaks = c(0,20,40,60))+
+  theme(legend.position = "none")+ 
+  theme(axis.text.x = element_text(size = 12,face = "bold"), axis.text.y = element_text(size = 12,face = "bold"))+
+  theme(axis.title = element_text(size = 15))+ 
+  labs(x = "Monthly growing degree days",y=expression("Monthly biomass production of genome size groups (g " ~ m^-2 *")"))
+
+
+#(2)Figure 4b
+d2<-read_xlsx("data.xlsx",sheet = "Fig4b")
+d2$class2<-factor(d2$class2,levels = c("small","large"))
+Fig4b<-ggplot(d2,aes(x,y,color=class2))+
+  geom_point(pch=17,size=2,aes(x,y), alpha = 0.7)+
+  theme_bw() +  
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  theme(panel.grid=element_blank())+
+  geom_smooth(aes(x=x,y=y),formula=y~I(x^2)+x,linetype=1,method="lm", se=0.95,alpha = 0.3,data=subset(d2,class2=="large"))+
+  geom_smooth(aes(x=x,y=y),linetype=1,method="lm", se=0.95,alpha = 0.3,data=subset(d2,class2=="small"))+
+  scale_linetype_manual(values=c(1,2))+
+  scale_x_continuous(limits = c(130,730),breaks = c(200,400,600))+
+  scale_y_continuous(limits = c(-10,70),breaks = c(0,20,40,60))+
+  theme(legend.position = "none")+ 
+  theme(axis.text.x = element_text(size = 12,face = "bold"), axis.text.y = element_text(size = 12,face = "bold"))+
+  theme(axis.title = element_text(size = 15))+ 
+  labs(x = "Monthly growing degree days",y=expression("Monthly biomass production of genome size groups (g " ~ m^-2 *")"))
+
+Figure4<-plot_grid(Fig4a, Fig4b,nrow = 1,ncol=2,label_x = 0.88,label_y = 0.99,label_size=16,align="hv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###############Figure 5######################
+library(readxl)
+library(ggplot2)
+library(cowplot)
+library("ggsci")
+COL.CI <- "#55555530"
+pal1<-pal_aaas("default")(10)
+pal2<-pal_npg("nrc",alpha = 0.7)(10)
+
+
+#(1) Figure 5a
+d1<-read_xlsx("data.xlsx",sheet = "Fig5a")
+Fig.5a<-ggplot(d1,aes(x,y))+
+  geom_line(aes(color=z))+
+  scale_color_manual(values=c("#795B34","#FCB462"))+
+  geom_point(x=148.1466452,y=9.20E-01,size=3,fill = "white",shape=22)+ 
+  geom_point(x=168.0932087,y=1.381043184,size=3,fill = "white",shape=21)+ 
+  geom_point(x=188.0397722,y=9.20E-01,size=3,fill = "white",shape=25)+ 
+  geom_point(x=140.3534189,y=3.06E-01,size=3,fill = "white",shape=22)+ 
+  geom_point(x=169.2570164,y=0.459021817,size=3,fill = "white",shape=21)+ 
+  geom_point(x=198.160614,y=3.06E-01,size=3,fill = "white",shape=25)+ 
+  labs(x = NULL,y=expression("AGR of species with GS ≥ 5 (g " ~ m^-2 ~ day^-1 *")"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(legend.position = c(0.58,0.87))+
+  theme(legend.position = "none")+
+  labs(linetype = NULL)+
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 9))+
+  theme(axis.title = element_text(size = 12,face = "bold"))+
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 14))+
+  coord_cartesian(ylim = c(0, 1.85))
+
+#(2) Figure 5b
+d2<-read_xlsx("data.xlsx",sheet = "Fig5b")
+Fig.5b<-ggplot(d2,aes(x,y))+
+  geom_line(aes(color=z))+
+  scale_color_manual(values=c("#795B34","#FCB462"))+
+  geom_point(x=132.7291329,y=2.23E-01,    size=3,fill = "grey",shape=22)+
+  geom_point(x=154.8533126,y=0.335120515,  size=3,fill = "grey",shape=21)+
+  geom_point(x=176.9774924,y=2.23E-01,    size=3,fill = "grey",shape=25)+
+  geom_point(x=118.343877,y=2.72E-01,    size=3,fill = "grey",shape=22)+
+  geom_point(x=147.789732,y=0.407695602, size=3,fill = "grey",shape=21)+
+  geom_point(x=177.2355869,y=2.72E-01,    size=3,fill = "grey",shape=25)+
+  labs(x = NULL,y=expression("AGR of species with GS ≥ 5 (g " ~ m^-2 ~ day^-1 *")"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(legend.position = c(0.58,0.87))+
+  theme(legend.position = "none")+
+  labs(linetype = NULL)+
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 7.4))+
+  theme(axis.title = element_text(size = 12,face = "bold"))+
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 14))+
+  coord_cartesian(ylim = c(0, 1.85))
+
+##(3) Figure 5c
+d3<-read_xlsx("data.xlsx",sheet = "Fig5c")
+Fig.5c<-ggplot(d3,aes(x,y))+
+  geom_line(aes(color=z))+
+  scale_color_manual(values=c("#795B34","#FCB462"))+
+  geom_point(x=150.0236623,y=9.09E-01,    size=3,fill = "white",shape=22)+ 
+  geom_point(x=171.0072824,y=1.363517707, size=3,fill = "white",shape=21)+ 
+  geom_point(x=191.9909024,y=9.09E-01,    size=3,fill = "white",shape=25)+ 
+  geom_point(x=149.1663647,y=1.15E+00,    size=3,fill = "white",shape=22)+ 
+  geom_point(x=173.6023214,y=1.718385419, size=3,fill = "white",shape=21)+ 
+  geom_point(x=198.0382782,y=1.15E+00,    size=3,fill = "white",shape=25)+ 
+  labs(x = NULL,y=expression("AGR of species with GS < 5 (g " ~ m^-2 ~ day^-1 *")"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(legend.position = c(0.58,0.87))+
+  theme(legend.position = "none")+
+  labs(linetype = NULL)+   #去掉图例标签
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 7.4))+
+  theme(axis.title = element_text(size = 12,face = "bold"))+
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 14))+
+  coord_cartesian(ylim = c(0, 1.85))
+
+#(4) Figure 5d
+d4<-read_xlsx("data.xlsx",sheet = "Fig5d")
+Fig.5d<-ggplot(d4,aes(x,y))+
+  geom_line(aes(color=z))+
+  scale_color_manual(values=c("#795B34","#FCB462"))+
+  geom_point(x=144.6176513,y=8.41E-01,   size=3,fill = "grey",shape=22)+ 
+  geom_point(x=168.7040499,y=1.262159582, size=3,fill = "grey",shape=21)+
+  geom_point(x=192.7904485,y=8.41E-01,  size=3,fill = "grey",shape=25)+ 
+  geom_point(x=155.0278533,y=1.04E+00, size=3,fill = "grey",shape=22)+ 
+  geom_point(x=186.1689524,y=1.554762198, size=3,fill = "grey",shape=21)+ 
+  geom_point(x=217.3100516,y=1.04E+00, size=3,fill = "grey",shape=25)+ 
+  labs(x = NULL,y=expression("AGR of species with GS < 5 (g " ~ m^-2 ~ day^-1 *")"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(legend.position = c(0.58,0.87))+
+  theme(legend.position = "none")+
+  labs(linetype = NULL)+
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 7.4))+
+  theme(axis.title = element_text(size = 12,face = "bold"))+
+  theme(axis.text.x = element_blank(), axis.text.y = element_text(size = 14))+
+  coord_cartesian(ylim = c(0, 1.85))
+
+#（5）Figure 5e
+d5<-read_xlsx("data.xlsx",sheet = "Fig5e")
+Fig.5e<-ggplot(d5, aes( x = SFGP, y = ANPP))+
+  geom_smooth(method = "lm",linewidth=1.1,color=pal1[10],se=FALSE)+
+  geom_point( size=2.8,color=pal1[9],shape = 0, alpha=0.7,stroke = 1.5,data=subset(d5,Site=="YC"))+
+  geom_point( size=2.8,color=pal1[9],shape = 15,alpha=0.7, stroke = 1.5,data=subset(d5,Site=="ZM"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+
+  theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14))+
+  labs(colour = NULL)+
+  theme(legend.position = "none")+
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 10))+
+  scale_x_continuous(limits=c(110,160),breaks = c(115,125,135,145,155),name = expression("Start of fast-growing phase (Julian days)"))+
+  scale_y_continuous(limits = c(-5.5, 155),breaks = c(20, 60, 100, 140),name = expression("ANPP (g m"^-2~")"))
+
+#（6）Figure 5f
+d6<-read_xlsx("data.xlsx",sheet = "Fig5f")
+Fig.5f<-ggplot(d6, aes( x = RMG, y = ANPP))+
+  geom_smooth(method = "lm",size=1.1,color=pal1[10],se=FALSE)+
+  geom_point( size=2.8,color=pal1[9],shape = 1, alpha=0.7,stroke = 1.5,data=subset(d6,Site=="YC"))+
+  geom_point( size=2.8,color=pal1[9],shape = 16,alpha=0.7, stroke = 1.5,data=subset(d6,Site=="ZM"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 16,face = "bold"))+
+  theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14))+
+  labs(colour = NULL)+
+  theme(legend.position = "none")+
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 14))+
+  scale_x_continuous(limits = c(0, 2.1),breaks = c(0, 0.5, 1, 1.5, 2),name = expression("Maximum growth rate (g m"^-2~"day"^-1~")")) +
+  scale_y_continuous(limits = c(-5.5, 155),breaks = c(20, 60, 100, 140),name = expression("ANPP (g m"^-2~")"))
+
+Figure5<-plot_grid(Fig.5a,Fig.5b,Fig.5c,Fig.5d,Fig.5e,Fig.5f,nrow = 3,ncol=2,label_x = 0.88,label_y = 0.99,label_size=16,align="hv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##########################Figure 6##############################
+library(readxl)
+library(ggplot2)
+library("ggsci")
+library("scales")
+pal1<-pal_aaas("default")(10)
+
+#Figure 6a-main plot
+data<-read_xlsx("data.xlsx",sheet = "Fig6a")
+d1<-subset(data,class1=="number")
+d1$Date2<-factor(d1$Date2,levels = c("May","June","July","Aug","Sep"))
+
+Fig6a_main<-ggplot(d1, aes( x = Date2, weight = y,fill=class3))+
+  geom_bar( position = "stack")+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 10,face = "bold"))+
+  theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14))+
+  labs(colour = NULL)+
+  theme(legend.position = "none")+ 
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 10))+
+  scale_y_continuous(limits  = c(0, 23),breaks=c(0,5,10,15,20))
+
+
+#Figure 6a-insert plot
+data<-read_xlsx("data.xlsx",sheet = "Fig6a")
+d2<-subset(data,class1=="percent")
+d2$Date2<-factor(d2$Date2,levels = c("May","June","July","Aug","Sep"))
+
+Fig6a_insert<-ggplot(d2, aes( x = Date2, weight = y,fill=class3))+
+  geom_bar( position = "stack")+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  theme_bw() +
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 10,face = "bold"))+
+  theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14))+
+  labs(colour = NULL)+
+  theme(legend.position = "none")+
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 10))+
+  scale_y_continuous(limits  = c(0, 101),breaks=c(0,25,50,75,100))
+
+
+#Figure 6b-main plot
+data<-read_xlsx("data.xlsx",sheet = "Fig6b")
+d1<-subset(data,class1=="number")
+d1$Date2<-factor(d1$Date2,levels = c("May","June","July","Aug","Sep"))
+Fig6b_main<-ggplot(d1, aes( x = Date2, weight = y,fill=class3))+
+  geom_bar( position = "stack")+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 10,face = "bold"))+ 
+  theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14))+
+  labs(X=NULL,colour = NULL)+
+  theme(legend.position = "none")+  
+  theme(legend.background = element_rect(fill = NA))+ 
+  theme(legend.text = element_text(size = 10))+
+  scale_y_continuous(limits  = c(0, 23),breaks=c(0,5,10,15,20))
+
+
+#Figure 6b-insert plot
+data<-read_xlsx("data_New_Phytologist.xlsx",sheet = "Fig6b")
+d2<-subset(data,class1=="percent")
+d2$Date2<-factor(d2$Date2,levels = c("May","June","July","Aug","Sep"))
+
+Fig6b_insert<-ggplot(d2, aes( x = Date2, weight = y,fill=class3))+
+  geom_bar( position = "stack")+
+  scale_color_manual(values = c("#4DBAD6","#E44A33"))+
+  theme_bw() + 
+  theme(panel.grid=element_blank())+
+  theme(axis.title = element_text(size = 10,face = "bold"))+
+  theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14))+
+  labs(X=NULL,colour = NULL)+
+  theme(legend.position = "none")+ 
+  theme(legend.background = element_rect(fill = NA))+
+  theme(legend.text = element_text(size = 10))+
+  scale_y_continuous(limits  = c(0, 101),breaks=c(0,25,50,75,100))
+
+
+
+
+
+
