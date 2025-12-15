@@ -1,2 +1,3 @@
 # Plant-GenomeSize-Grassland-2025
 This dataset was collected from a temperate grassland ecosystem and can be used to assess the effects of rising temperature on the growth of plants with different genome sizes.
+The code.R.txt and data.xlsx are used in supporting the study titled "Warming-induced miniaturization of plant community genome size in temperate grasslands over the last four decades". In this study, we analyzed data from temperate grasslands, examining species composition, phenology, and productivity in response to rising temperatures. Each sheet in the file data.xlsx contains the data used to generate a corresponding figure in the paper. Run the codes in R by using the data from the xlsx files.
